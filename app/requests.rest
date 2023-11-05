@@ -13,3 +13,5 @@ GET https://craftercms-auth.tekcent.com/api/1/services/get-pages.json?path=/site
 GET http://localhost:8080/api/1/site/content_store/tree.json?url=/site/website&site=nbp
 
 
+###
+GET http://localhost:8080/api/1/services/page.json?path=/site/website&depth=3&crafterSite=nbp

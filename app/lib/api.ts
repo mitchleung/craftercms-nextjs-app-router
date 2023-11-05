@@ -5,7 +5,7 @@ import {
   urlTransform
 } from '@craftercms/content';
 import { firstValueFrom, map, switchMap } from 'rxjs';
-import { NextPageContext } from 'next'
+import { GetStaticPropsContext } from 'next'
 
 export async function getModel(path = "/site/website/index.xml") {
   return await firstValueFrom(
@@ -27,12 +27,24 @@ export async function getModelByUrl(webUrl = '/') {
   );
 }
 
-export async function getInitialProps(context: NextPageContext) {
+export async function getInitialProps(context: GetStaticPropsContext) {
   let composedPath;
-  if (context?.query?.id instanceof Array) {
-    composedPath = context?.query?.id!.join('/');
-  }else {
-    composedPath = context?.query?.id ?? context.pathname;
+  if (context?.params?.id instanceof Array) {
+    composedPath = context?.params?.id!.join('/');
+  } else {
+    composedPath = context?.params?.id ?? '/';
+  }
+  console.log("composedPath", composedPath);
+  const model = await getModelByUrl(composedPath);
+  return { model };
+}
+
+export async function getModelByParamsId(id: string[] | string) {
+  let composedPath;
+  if (id instanceof Array) {
+    composedPath = id.join('/');
+  } else {
+    composedPath = id ?? '/';
   }
   console.log("composedPath", composedPath);
   const model = await getModelByUrl(composedPath);

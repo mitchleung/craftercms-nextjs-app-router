@@ -1,19 +1,20 @@
-"use client";
+// "use client";
 
 import React from 'react';
-import { ContentInstance } from '@craftercms/models';
-import { getInitialProps } from '../lib/api';
-
 import { ExperienceBuilder, RenderComponents, RenderField } from '@craftercms/experience-builder/react';
-
-import { Footer } from '@/components/shared';
-import { contentTypeMap } from '@/components/ContentMap';
 import { useCrafterAppContext } from '@/components/providers/CrafterAppProvider';
 
-export default function Home({ model }: { model: ContentInstance }) {
+import { getModel, getModelByUrl } from '../lib/api';
+import { contentTypeMap } from '@/components/ContentMap';
+
+import { Footer } from '@/components/shared';
+
+
+export default async function Home() {
+  const model = await getModel();
+  console.log("MODEL >>>>>>>", model);
 
   const { isAuthoring } = useCrafterAppContext();
-
   return (
     <ExperienceBuilder model={model} isAuthoring={isAuthoring}>
       <RenderField
@@ -33,4 +34,4 @@ export default function Home({ model }: { model: ContentInstance }) {
   )
 }
 
-Home.getInitialProps = getInitialProps;
+// Home.getInitialProps = getInitialProps;
