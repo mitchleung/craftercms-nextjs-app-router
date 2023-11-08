@@ -10,7 +10,7 @@ const Footer = () => {
   if (!model) return '';
 
   return (
-    <Model model={model} component={React.Fragment}>
+    <Model model={model} component={"div"}>
       <RenderField
         model={model}
         fieldId="copy_s"

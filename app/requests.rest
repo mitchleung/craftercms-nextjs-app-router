@@ -15,3 +15,18 @@ GET http://localhost:8080/api/1/site/content_store/tree.json?url=/site/website&s
 
 ###
 GET http://localhost:8080/api/1/services/page.json?path=/site/website&depth=3&crafterSite=nbp
+
+
+###
+GET http://localhost:8080/api/1/services/page.json?path=/site/website&depth=3&crafterSite=next-js
+
+
+###
+GET http://localhost:8080/api/1/services/page.json?path=/site/website&depth=6&crafterSite=multilingual-website-v2
+
+###
+GET http://localhost:8080/api/1/services/page.json?path=/site/website&depth=4&crafterSite=Multilingual-Website-V2
+
+###
+GET https://craftercms-auth.tekcent.com/api/1/services/get-pages.json?path=/site/website/&depth=3&crafterSite=multilingual-editorial-website
+###

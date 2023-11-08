@@ -1,26 +1,25 @@
-// "use client";
+// "use client"
 
-import React from 'react';
-import { ExperienceBuilder, RenderComponents, RenderField } from '@craftercms/experience-builder/react';
-import { useCrafterAppContext } from '@/components/providers/CrafterAppProvider';
-
-import { getModel, getModelByUrl } from '../lib/api';
 import { contentTypeMap } from '@/components/ContentMap';
-
 import { Footer } from '@/components/shared';
+import { ExperienceBuilder, RenderComponents, RenderField } from '@craftercms/experience-builder/react';
+import { ContentInstance } from '@craftercms/models';
+import React from 'react'
 
+const HomeBody = ({
+  model,
+  isAuthoring
+}: {
+  model: ContentInstance,
+  isAuthoring: boolean
+}) => {
 
-export default async function Home() {
-  const model = await getModel();
-  console.log("MODEL >>>>>>>", model);
-
-  const { isAuthoring } = useCrafterAppContext();
   return (
     <ExperienceBuilder model={model} isAuthoring={isAuthoring}>
       <RenderField
         model={model}
         fieldId="title_s"
-        component={React.Fragment}
+        component={"div"}
         componentProps={{
           // Component props can simply be sent as props to RenderField, and
           // they would be passed down to Typography, however, because there's
@@ -34,4 +33,4 @@ export default async function Home() {
   )
 }
 
-// Home.getInitialProps = getInitialProps;
+export default HomeBody
