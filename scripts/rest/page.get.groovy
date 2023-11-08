@@ -1,68 +1,40 @@
-def contentObject = [:]
-def pageId = (params.id) ? params.id : "/site/website/index.xml"
+/*
+ * Copyright (C) 2007-2022 Crafter Software Corporation. All Rights Reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3 as published by
+ * the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-def pageItem = siteItemService.getSiteItem(pageId)
+/**
+ * @author Dejan Brkic
+ */
 
-contentObject.contentType = "/page/entry"
-contentObject = getContentPage(pageItem.getDom(), pageId)
+import org.apache.commons.lang3.StringUtils
 
+def result = [:]
+def site = params.site_id
+def path = params.path
+def depth = params.depth.toInteger()
+def order = params.order
 
-  /* turn a dom object in to a content map */
-  def getContentPage(dom, path) {
-      return getElementContent(dom.page, path)
-  }
-  
-  /* turn a dom object in to a content map */
-  def getContentComponent(dom, path) {
-      return getElementContent(dom.component, path)
-  }
+/** Validate Parameters */
+def invalidParams = false
+def paramsList = []
 
-  def getElementContent(element, path) {
-  
-      def content = [:]
-      content.cmsId = path
-      element.elements().each { property ->
-      
-          if(property.isTextOnly()) {
-              // element is a property
-              content[property.getName()] = property.getText()
-          }
-          else {
-             
-                  // item is a repeat group (recursive)
-                  if("item".equals(property.getName())) {
-                      if(!content[property.getName()]) {
-                          // init the array
-                          content[property.getName()] = []
-                      }
-                      
-                      def include = property.selectNodes("./include");
-                      if(include.size() == 0) {
+if (invalidParams) {
+    response.setStatus(400)
+    result.message = "Invalid parameter(s): " + paramsList
+} else {
+    result.item = siteItemService.getSiteTree(path, depth)
 
-                        // repeat group
-//                        content[property.getName()].add(getElementContent(property))
-                      }
-                      else {
-                        // component
-                        def componentPath = include[0].getText();
-                        //content[property.getName()].add(componentPath)
-
-                        // code that unfurls components
-                        def compomentItem = siteItemService.getSiteItem(componentPath)
-                        content[property.getName()].add(getElementContent(compomentItem.dom.component, componentPath))
-                       
-
-                        
-                      }
-                  }
-                  else {
-                      content[property.getName()] = getElementContent(property, "")
-                  }
-
-          }
-      }
-      
-      return content
-  }
-
-return contentObject
+}
+return result
